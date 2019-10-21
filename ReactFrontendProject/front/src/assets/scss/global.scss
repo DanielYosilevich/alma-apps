@@ -1,0 +1,96 @@
+// @import './base/variables';
+// @import './base/functions';
+// @import './base/mixins';
+// @import './base/placeholders';
+// @import './framework/nav-bar';
+// @import './framework/main-wrapper';
+// @import './framework/side-bar';
+
+//base
+html {
+  height:100%;
+}
+
+body {
+  height:100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // background-color: lightsteelblue;
+}
+  
+#root{
+  height:100%;
+}
+
+.App {
+  min-height:100%;
+  // background-color: lightgray;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  monospace;
+}
+
+button{
+  cursor: pointer;
+}
+
+.arcs{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arcs div {
+  border: 2px solid #000; /* the 'strokes' of the arc */
+  display: inline-block;
+  min-width: 4em; /* the width of the innermost element */
+  min-height: 4em; /* the height of the innermost element */
+  padding: 0.5em; /* the spacing between each arc */
+  border-radius: 50%; /* for making the elements 'round' */
+  border-top-color: transparent; /* hiding the top border */
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.numberCircle {
+  font: 32px Arial, sans-serif;
+
+  width: 2em;
+  height: 2em;
+  box-sizing: initial;
+
+  background: #fff;
+  border: 0.1em solid #666;
+  color: #666;
+  text-align: center;
+  border-radius: 50%;    
+
+  line-height: 2em;
+  box-sizing: content-box;   
+}
+
+.bool-answer {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:green;
+}
+
+.roundbutton{
+  display:block;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid green;
+  margin: 1rem;
+}
+
