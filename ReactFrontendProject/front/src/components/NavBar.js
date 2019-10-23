@@ -6,6 +6,7 @@ const NavBar = (props) => {
         <React.Fragment>
             <div className="navbar-wrapper">
                 <button onClick={() => props.history.push('/')}> Home</button>
+                <span>FileCrawler</span>
                 <button onClick={() => props.history.push('/about')}> About</button>
             </div>
             <hr />

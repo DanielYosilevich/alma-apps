@@ -7,14 +7,17 @@ const Home = () => {
 
     return (
         <div className="central-wrapper">
-            <div>Home page</div>
-            {Array.apply(null, { length: globalState.tree.size }).map((e, index) => (
-                <TreeDetails
+            <div style= {{display:"inline-flex"}}>
+            {Array.apply(null, { length: globalState.tree.size }).map((e, index) => {
+                if (globalState.tree.get(index)) return <TreeDetails
                     key={index}
                     level={index + 1}
                     children={globalState.tree.get(index)}
                 />
-            ))}
+                return null
+            }
+            )}
+            </div>
         </div>
     )
 }

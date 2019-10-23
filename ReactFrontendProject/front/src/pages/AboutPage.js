@@ -2,22 +2,25 @@ import React from 'react'
 
 const About = () => {
     return (
-        <div className="central-wrapper">
-            <div>About page</div>
-            <div className="arcs">
-                <div>
-                    <div>
-                        <div>
-                            <div> </div>
-                        </div>
-                    </div>
-                </div>
+        <React.Fragment>
+            <div className = {"about-wrapper"}>
+                <span>File Structure Viewer</span>
+                <br />
+                Made with React & Node.js
+                <hr />
+                <span>Author</span>
+                <br />
+                Daniel Yosilevich
+                <br />
+                Tel.: (972)546729752
+                <br />
+                Email: danielyosilevich@gmail.com
+                <br />
+                <a href="https://danielyosilevich.github.io/website/">Website</a>
+                <br />
+                <hr />
             </div>
-            <div className="numberCircle">30</div>
-            <div className="numberCircle" style={{fontSize: "60px"}}>1</div>
-            <div className="numberCircle" style={{fontSize: "12px"}}>2</div>
-
-        </div>
+        </React.Fragment>
     )
 }
 

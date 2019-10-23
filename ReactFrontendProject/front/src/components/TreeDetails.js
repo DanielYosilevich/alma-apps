@@ -5,13 +5,20 @@ const TreeDetails = (props) => {
 
     return (
         <React.Fragment>
-            {(props.children).map((child) =>
-                <LevelDetails
-                    key={child.id}
-                    child={child}
-                />
-            )}
-            <hr />
+            <div style={{ 
+                display: "flex", 
+                flexDirection: "column",
+                marginRight:"3rem"
+                }}>
+                {(props.children).map((child, index) =>
+                    <LevelDetails
+                        key={child.id}
+                        child={child}
+                        index={index}
+                        len = {props.children.length}
+                    />
+                )}
+            </div>
         </React.Fragment>
     )
 }
