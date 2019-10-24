@@ -33,4 +33,6 @@ Route::post('/friends', 'FriendsController@handleFriend');
 
 Route::post('/birthdays', 'BirthdaysController@show');
 
+Route::post('/potentials', 'PotentialsController@show');
+
 //Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');

@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>Details</title>
 </head>
@@ -69,11 +69,22 @@
         </div>
         <div id="friendsBirthdaysID" class="hidden"></div>
         <hr>
-        @component('home')
-        @slot('title')
-        Logout
-        @endslot
-        @endcomponent
+        <div>
+            <button onclick="togglePotentials(event)">Show Potential Friends</button>
+        </div>
+        <div id="friendsPotentialsID" class="hidden"></div>
+        <hr>
+        <div>
+            <button onclick="toggleUpcoming(event)">Show Upcoming Birthdays</button>
+        </div>
+    </div>
+    <div id="friendsUpcomingID" class="hidden"></div>
+    <hr>
+    @component('home')
+    @slot('title')
+    Logout
+    @endslot
+    @endcomponent
     </div>
 </body>
 
@@ -88,9 +99,14 @@
 <script>
     var friends = @json($friends);
     var currUser = @json($currUser);
+    var inProcess = false;
 
     function toggleFriend(e) {
-        console.log(e.target.className);
+        if (inProcess) {
+            alert('SQL is still processing... Please wait.');
+            return;
+        }
+        inProcess = true;
         e.target.classList.toggle("logo");
         var id = e.target.getAttribute('data-id');
         var name = e.target.getAttribute('data-name');
@@ -129,9 +145,8 @@
 
     function toggleBirthdays(e) {
         document.querySelector('#friendsBirthdaysID').classList.toggle("hidden");
-        e.target.innerText = (e.target.innerText == 'Show Birthdays') ?
-            'Hide Birthdays' : 'Show Birthdays';
-        if (e.target.innerText === 'Hide Birthdays') {
+        if (e.target.innerText === 'Show Birthdays') {
+            e.target.innerText = 'Hide Birthdays';
             $.ajax({
                 url: '/birthdays',
                 type: 'POST',
@@ -142,18 +157,98 @@
                 success: function(response) {
                     console.log(response);
                     var users = response.data;
-                    var st = `<hr> <ul>`
-                    users.map(function(user) {
-                        var tmp = user.birthday.slice(2) + '/' + user.birthday.slice(0, 2);
-                        st += `<li>${user.name} - ${tmp}</li>`
-                    })
-                    st += `</ul>`
-                    $("#friendsBirthdaysID").append(st);
+                    var st = `<hr> Next Two Weeks: <hr> <ul>`
+                    if (users.length) {
+                        users.map(function(user) {
+                            var tmp = user.birthday.slice(2) + '/' + user.birthday.slice(0, 2);
+                            st += `<li>${user.name} - ${tmp}</li>`
+                        })
+                        st += `</ul>`
+                        $("#friendsBirthdaysID").append(st);
+                    }
                 },
                 error: function(response) {
                     console.log('error')
                 }
             });
+        } else {
+            $("#friendsBirthdaysID").empty();
+            e.target.innerText = 'Show Birthdays';
+        }
+    }
+
+    function togglePotentials(e) {
+        document.querySelector('#friendsPotentialsID').classList.toggle("hidden");
+        if (e.target.innerText === 'Show Potential Friends') {
+            e.target.innerText = 'Hide Potential Friends';
+            $.ajax({
+                url: '/potentials',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    interval: 5,
+                    base: currUser.birthday
+                },
+                success: function(response) {
+                    console.log(response);
+                    var users = response.data;
+                    var st = `<hr> Potential Friends:<br> Showing current user for brevity, i.e to demonstrate query works for +/- 5 days birthday range <br> <hr> <ul>`
+                    if (users.length) {
+                        users.map(function(user) {
+                            var tmp = user.birthday.slice(2) + '/' + user.birthday.slice(0, 2);
+                            st += `<li>${user.name} - ${tmp}</li>`
+                        })
+                        st += `</ul>`
+                        $("#friendsPotentialsID").append(st);
+                    }
+                },
+                error: function(response) {
+                    console.log('error')
+                }
+            });
+        } else {
+            $("#friendsPotentialsID").empty();
+            e.target.innerText = 'Show Potential Friends';
+        }
+    }
+
+    function toggleUpcoming(e) {
+        document.querySelector('#friendsUpcomingID').classList.toggle("hidden");
+        if (e.target.innerText === 'Show Upcoming Birthdays') {
+            e.target.innerText = 'Hide Upcoming Birthdays';
+            var today = new Date();
+            var year = today.getFullYear();
+            var newYear = `${year}/12/30`;
+            const oneDay = 24 * 60 * 60 * 1000; 
+            const nyDate = new Date(`${year}`, 12, 31);
+            const interval = Math.round(Math.abs((nyDate - today) / oneDay));
+            $.ajax({
+                url: '/birthdays',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    interval: newYear
+                },
+                success: function(response) {
+                    console.log(response);
+                    var users = response.data;
+                    var st = `<hr> Upcoming Birthdays:<hr> <ul>`
+                    if (users.length) {
+                        users.map(function(user) {
+                            var tmp = user.birthday.slice(2) + '/' + user.birthday.slice(0, 2);
+                            st += `<li>${user.name} - ${tmp}</li>`
+                        })
+                        st += `</ul>`
+                        $("#friendsUpcomingID").append(st);
+                    }
+                },
+                error: function(response) {
+                    console.log('error')
+                }
+            });
+        } else {
+            $("#friendsUpcomingID").empty();
+            e.target.innerText = 'Show Potential Friends';
         }
     }
 </script>
