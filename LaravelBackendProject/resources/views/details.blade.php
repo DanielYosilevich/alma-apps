@@ -218,16 +218,18 @@
             e.target.innerText = 'Hide Upcoming Birthdays';
             var today = new Date();
             var year = today.getFullYear();
-            var newYear = `${year}/12/30`;
+            var d = today.getDate();
+            var m = today.getMonth();
             const oneDay = 24 * 60 * 60 * 1000; 
-            const nyDate = new Date(`${year}`, 12, 31);
-            const interval = Math.round(Math.abs((nyDate - today) / oneDay));
+            const crDate = new Date(year, m, d);
+            const nyDate = new Date(year, 11, 31);
+            const interval = Math.round(Math.abs((nyDate - crDate) / oneDay));
             $.ajax({
                 url: '/birthdays',
                 type: 'POST',
                 dataType: 'JSON',
                 data: {
-                    interval: newYear
+                    interval: interval
                 },
                 success: function(response) {
                     console.log(response);
